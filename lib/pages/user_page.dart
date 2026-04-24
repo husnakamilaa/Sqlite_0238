@@ -71,6 +71,10 @@ class _UserFormPageState extends State<UserFormPage> {
                   if (value == null || value.isEmpty) {
                     return "Email tidak boleh kosong";
                   }
+                  final regex = RegExp(r'^[a-zA-Z0-9._]+@gmail\.com$');
+                  if(!regex.hasMatch(value)){
+                    return "Email harus valid dan menggunakan @gmail.com";
+                  }
                   return null;
                 },
               ),
@@ -103,7 +107,7 @@ class _UserFormPageState extends State<UserFormPage> {
 
               const SizedBox(height: 15),
 
-              
+
 
               const SizedBox(height: 20),
               SizedBox(
