@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_intl_phone_field/flutter_intl_phone_field.dart';
 import 'package:sqlite/bloc/user_bloc.dart';
 import 'package:sqlite/bloc/user_event.dart';
 import 'package:sqlite/domain/entities/user_entity.dart';
@@ -59,14 +60,51 @@ class _UserFormPageState extends State<UserFormPage> {
               ),
 
               const SizedBox(height: 15),
-              
-              TextField(
+
+              TextFormField(
                 controller: _emailController,
                 decoration: const InputDecoration(
                   labelText: "Email",
                   border: OutlineInputBorder(),
                 ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Email tidak boleh kosong";
+                  }
+                  return null;
+                },
               ),
+
+              const SizedBox(height: 15),
+
+              IntlPhoneField(
+                decoration: const InputDecoration(
+                  labelText: 'No Telpon',
+                  border: OutlineInputBorder(),
+                ),
+                initialCountryCode: 'ID',
+                initialValue: notelp,
+                onChanged: (phone) {
+                  notelp = phone.completeNumber;
+                },
+                validator: (phone) {
+                  if (phone == null || phone.number.isEmpty) {
+                    return "No telpon tidak boleh kosong";
+                  }
+                  if (!phone.completeNumber.startsWith("+62")){
+                    return "No telpon harus diawali +62";
+                  }
+                  if (phone.completeNumber.length > 15) {
+                    return "No telpon maksimal 15 karakter";
+                  }
+                  return null;
+                },
+              ),
+
+              const SizedBox(height: 15),
+
+              
+
               const SizedBox(height: 20),
               SizedBox(
                 width: double.infinity,
