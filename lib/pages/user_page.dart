@@ -107,9 +107,22 @@ class _UserFormPageState extends State<UserFormPage> {
 
               const SizedBox(height: 15),
 
-
+              TextFormField(
+                controller: _alamatController,
+                decoration: const InputDecoration(
+                  labelText: "Alamat",
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty){
+                    return "Alamat tidak boleh kosong";
+                  }
+                  return null;
+                },
+              ),
 
               const SizedBox(height: 20),
+              
               SizedBox(
                 width: double.infinity,
                 height: 50,
