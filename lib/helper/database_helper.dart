@@ -14,5 +14,16 @@ class DatabaseHelper {
     return _database!;
   }
 
-  
+  Future<Database> _initDb() async {
+    String path = join(await getDatabasesPath(), 'user_database.db');
+    return await openDatabase(
+      path,
+      version: 1,
+      onCreate: (db, version) {
+        return db.execute(
+          'CREATE TABLE users(id TEXT PRIMARY KEY, name TEXT, email TEXT)',
+        );
+      },
+    );
+  }
 }
