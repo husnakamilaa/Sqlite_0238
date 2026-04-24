@@ -128,12 +128,15 @@ class _UserFormPageState extends State<UserFormPage> {
                 height: 50,
                 child: ElevatedButton(
                   onPressed: () {
-                    final newUser = UserEntity(
+                    if (_formKey.currentState!.validate()){
+                      final newUser = UserEntity(
                       id: isEdit
                           ? widget.user!.id
                           : DateTime.now().microsecondsSinceEpoch.toString(),
                       name: _nameController.text,
                       email: _emailController.text,
+                      notelp: notelp,
+                      alamat: _alamatController.text,
                     );
                     if (isEdit) {
                       context.read<UserBloc>().add(UpdateUserEvent(newUser));
@@ -141,6 +144,7 @@ class _UserFormPageState extends State<UserFormPage> {
                       context.read<UserBloc>().add(AddUserEvent(newUser));
                     }
                     Navigator.pop(context);
+                    }
                   },
                   child: Text(isEdit ? "Simpan Perubahan" : "Simpan User Baru"),
                 ),
