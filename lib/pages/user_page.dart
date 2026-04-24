@@ -13,8 +13,13 @@ class UserFormPage extends StatefulWidget {
 }
 
 class _UserFormPageState extends State<UserFormPage> {
+  final _formKey = GlobalKey<FormState>();
+
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
+  final _alamatController = TextEditingController();
+
+  String notelp = "";
 
   @override
   void initState() {
@@ -22,6 +27,8 @@ class _UserFormPageState extends State<UserFormPage> {
     if (widget.user != null) {
       _nameController.text = widget.user!.name;
       _emailController.text = widget.user!.email;
+      _alamatController.text = widget.user!.alamat;
+      notelp = widget.user!.notelp;
     }
   }
 
@@ -33,47 +40,58 @@ class _UserFormPageState extends State<UserFormPage> {
       appBar: AppBar(title: Text(isEdit ? "Edit User" : "Tambah User")),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _nameController,
-              decoration: const InputDecoration(
-                labelText: "Nama Lengkap",
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 15),
-            TextField(
-              controller: _emailController,
-              decoration: const InputDecoration(
-                labelText: "Email",
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 20),
-            SizedBox(
-              width: double.infinity,
-              height: 50,
-              child: ElevatedButton(
-                onPressed: () {
-                  final newUser = UserEntity(
-                    id: isEdit
-                        ? widget.user!.id
-                        : DateTime.now().microsecondsSinceEpoch.toString(),
-                    name: _nameController.text,
-                    email: _emailController.text,
-                  );
-                  if (isEdit) {
-                    context.read<UserBloc>().add(UpdateUserEvent(newUser));
-                  } else {
-                    context.read<UserBloc>().add(AddUserEvent(newUser));
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                controller: _nameController,
+                decoration: const InputDecoration(
+                  labelText: "Nama Lengkap",
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Nama gk boleh kosong";
                   }
-                  Navigator.pop(context);
+                  return null;
                 },
-                child: Text(isEdit ? "Simpan Perubahan" : "Simpan User Baru"),
               ),
-            ),
-          ],
+
+              const SizedBox(height: 15),
+              
+              TextField(
+                controller: _emailController,
+                decoration: const InputDecoration(
+                  labelText: "Email",
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              const SizedBox(height: 20),
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  onPressed: () {
+                    final newUser = UserEntity(
+                      id: isEdit
+                          ? widget.user!.id
+                          : DateTime.now().microsecondsSinceEpoch.toString(),
+                      name: _nameController.text,
+                      email: _emailController.text,
+                    );
+                    if (isEdit) {
+                      context.read<UserBloc>().add(UpdateUserEvent(newUser));
+                    } else {
+                      context.read<UserBloc>().add(AddUserEvent(newUser));
+                    }
+                    Navigator.pop(context);
+                  },
+                  child: Text(isEdit ? "Simpan Perubahan" : "Simpan User Baru"),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
