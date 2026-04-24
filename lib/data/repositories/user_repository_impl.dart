@@ -46,4 +46,5 @@ class UserRepositoryImpl implements UserRepository{
     final db = await dbHelper.database;
     await db.delete('users', where: 'id = ?', whereArgs: [id]);
   }
+  
 }
