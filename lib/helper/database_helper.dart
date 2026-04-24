@@ -18,17 +18,11 @@ class DatabaseHelper {
     String path = join(await getDatabasesPath(), 'user_database.db');
     return await openDatabase(
       path,
-      version: 2,
+      version: 1,
       onCreate: (db, version) {
         return db.execute(
-          'CREATE TABLE users(id TEXT PRIMARY KEY, name TEXT, email TEXT)',
+          'CREATE TABLE users(id TEXT PRIMARY KEY, name TEXT, email TEXT, notelp TEXT, alamat TEXT)',
         );
-      },
-      onUpgrade: (db, oldVersion, newVersion) async {
-        if (oldVersion < 2) {
-          await db.execute("ALTER TABLE users ADD COLUMN notelp TEXT");
-          await db.execute("ALTER TABLE users ADD COLUMN alamat TEXT");
-        }
       },
     );
   }
