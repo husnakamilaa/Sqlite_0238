@@ -8,5 +8,11 @@ class DatabaseHelper {
   factory DatabaseHelper() => _instance;
   DatabaseHelper._internal();
 
+  Future<Database> get database async {
+    if(_database != null) return _database!;
+    _database = await _initDb();
+    return _database!;
+  }
+
   
 }
